@@ -19,7 +19,7 @@ passport.deserializeUser((id, done) => {
     })
   //now we would be finding this user by using its id in 'users' collection
 })
-
+console.log('passport.js:: defined serialize and deserialize')
 //new google strategry we are telling application that we want to authenticate with google
 //passport.use is generic function to handle authentication, and what type, that we wrote as parameter googlestrategy
 //parameters for google strategy are client iinformation like id and secret and callback url which is used once google authenticates
@@ -30,22 +30,24 @@ passport.deserializeUser((id, done) => {
 // Client id is pubilc token, we can share with any one , it identifies our project on google repositories
 // Client Secret is private, it should not be shared with any one otherwise they can have elevated previlage access to our application
 //---------------
+//'https://murmuring-badlands-81838.herokuapp.com/auth/google/callback'
 passport.use(
     new GoogleStrategy(
       {
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: '/auth/google/callback', //'https://murmuring-badlands-81838.herokuapp.com/auth/google/callback'
+        callbackURL: '/auth/google/callback', 
         proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
         //In mongoose it does not return directly and it makes asychronous requests
         //then statement is used after query completion, it is null or not
         //below line would check into db if this id already exists?
+        console.log('Google aouth successfully returned .')
         User.findOne({ googleId: profile.id })
             .then((existingUser) => {
               if(existingUser){
-                console.log(("User Already Exists with ID:").concat(existingUser.googleId))
+                console.log(('User Already Exists with ID:').concat(existingUser.googleId))
                 // we already have a record with the given Profie ID
                 done(null, existingUser) // null mean no error, second parameter is existing User
               } else{
@@ -63,3 +65,4 @@ passport.use(
       }
     )
   )
+  console.log('passport.js:: after strategy defined')
