@@ -35,7 +35,8 @@ passport.use(
       {
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback', //'https://murmuring-badlands-81838.herokuapp.com/auth/google/callback'
+        proxy: true
       },
       (accessToken, refreshToken, profile, done) => {
         //In mongoose it does not return directly and it makes asychronous requests
