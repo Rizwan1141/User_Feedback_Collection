@@ -39,26 +39,24 @@ passport.use(
         callbackURL: '/auth/google/callback', 
         proxy: true
       },
-      (accessToken, refreshToken, profile, done) => {
+      async (accessToken, refreshToken, profile, done) => {
         //In mongoose it does not return directly and it makes asychronous requests
         //then statement is used after query completion, it is null or not
         //below line would check into db if this id already exists?
         console.log('Google aouth successfully returned .')
-        User.findOne({ googleId: profile.id })
-            .then((existingUser) => {
-              if(existingUser){
-                console.log(('User Already Exists with ID:').concat(existingUser.googleId))
-                // we already have a record with the given Profie ID
-                done(null, existingUser) // null mean no error, second parameter is existing User
-              } else{
-                // we dont have a user with this ID, make a new user in db
-                // we created new object of User and assigned it value and to save in actual database we used function save()
-                //used then to call done, as we dont know what and when user creation is completed due to asyncronous behaviour 
-                new User({ googleId: profile.id })
-                    .save()
-                    .then(user => done(null, user))
-              }
-            })
+        const existingUser = await User.findOne({ googleId: profile.id })
+        if(existingUser)
+        {
+          console.log(('User Already Exists with ID:').concat(existingUser.googleId))
+          // we already have a record with the given Profie ID
+          return  done(null, existingUser) // null mean no error, second parameter is existing User
+        } 
+        // we dont have a user with this ID, make a new user in db
+        // we created new object of User and assigned it value and to save in actual database we used function save()
+        //used then to call done, as we dont know what and when user creation is completed due to asyncronous behaviour 
+        const user = await new User({ googleId: profile.id }).save()
+        done(null, user)
+              
         // console.log('accessToken', accessToken);
        // console.log('refresh Token', refreshToken);
        // console.log('profile', profile);

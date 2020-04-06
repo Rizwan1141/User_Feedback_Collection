@@ -8,13 +8,23 @@ module.exports = (app) => {
       scope: ['profile', 'email']
     })
   )
-
-  app.get('/auth/google/callback', passport.authenticate('google'))
+  
+  //here passport.authenticate is a middleware, and after processing it cals next middleware
+  // third parameter is when user is authenticated where to send user
+  // this redirect function tells function to move on to next address
+  app.get(
+    '/auth/google/callback', 
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/surveys')
+    }
+  )
 
   app.get('/api/logout', (req, res) => {
     req.logout();
     //it would take the cookie and kill it
-    res.send(req.user)
+    //res.send(req.user)
+    res.redirect('/')
   })
 
   app.get('/api/current_user', (req, res) => {
