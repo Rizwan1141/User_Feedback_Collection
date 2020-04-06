@@ -50,7 +50,7 @@ if(process.env.NODE_ENV === 'production'){
   //express will serve up the index.html file if it does not recognize the route
   const path = require('path')
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(_dirname, 'client', 'build', 'index.html'))
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   }) // it says if some one asks for route which we dont understand , we would consider it is defined with react router, so we would server index.html
 }
 
