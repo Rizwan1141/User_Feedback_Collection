@@ -6,8 +6,8 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser')
 const keys = require('./config/keys');
-require('./models/user')
-require('./models/survey')
+require('./models/User')
+require('./models/Survey')
 require('./services/passport')
 
 console.log('index.js:: before connecting to mongodb')
