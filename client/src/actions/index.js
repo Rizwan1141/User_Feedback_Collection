@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { FETCH_USER } from './types'
-import { bindActionCreators } from 'redux'
+import { FETCH_SURVEYS } from './types'
+//import { bindActionCreators } from 'redux'
 
 export const fetchUser = () => 
     async (dispatch) => {
@@ -28,3 +29,20 @@ export const handleToken = (token) =>
         const res = await axios.post('./api/stripe', token)
         dispatch({ type: FETCH_USER, payload: res.data })
     }
+
+//values would be the data we receive from user input form
+//redux always expect us to return an object which is an action, with type property
+export const submitSurvey = (values, history) => 
+    async dispatch => {
+        const res = await axios.post('/api/surveys', values)
+        
+        history.push('/surveys')
+        dispatch({ type: FETCH_USER, payload: res.data })
+        //return { type: 'submit_survey' }
+}
+
+export const fetchSurveys = () => async dispatch => {
+    const res = await axios.get('/api/surveys')
+
+    dispatch({ type: FETCH_SURVEYS, payload: res.data })
+}

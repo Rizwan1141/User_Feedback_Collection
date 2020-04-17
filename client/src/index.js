@@ -11,7 +11,8 @@ import App from './components/App'
 
 //import for all the reducers here
 import reducers from './reducers'
-
+import axios from 'axios'
+window.axios = axios //this is just a temp code to test send email function
 
 // creating instance of store for our use
 //1st argument is all the reducers we have in our application

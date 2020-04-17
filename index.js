@@ -7,6 +7,7 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser')
 const keys = require('./config/keys');
 require('./models/user')
+require('./models/survey')
 require('./services/passport')
 
 console.log('index.js:: before connecting to mongodb')
@@ -41,6 +42,7 @@ require('./routes/billingRoutes')(app)
 // app.get('/', (req, res) => {
 //   res.send({ bye: 'there - buddy' })
 // })
+require('./routes/surveyRoutes')(app)
 
 if(process.env.NODE_ENV === 'production'){
   // express sill serve up production assets like our main.js file, or main.css
