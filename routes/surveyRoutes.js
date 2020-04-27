@@ -7,7 +7,7 @@
 //2nd ly - if user is loged in then we would check if user has enough credit to make survey
 // to handl this we would use middle ware for login check
 const _ = require('lodash')
-const Path = require('path-parser')
+const { Path } = require('path-parser')
 const { URL } = require('url')
 const mongoose = require('mongoose')
 const requireLogin = require('../middlewares/requireLogin')
@@ -38,6 +38,8 @@ module.exports = app => {
   })
 
   app.post('/api/surveys/webhooks', (req, res) => {
+    console.log(req.body)
+    //console.log(res)
     //const events = _.map(req.body, (event) => { --we only need email and url so we would get them out only
     const p = new Path('/api/surveys/:surveyId/:choice')
     // const events = _.map(req.body, ({ email, url }) => {
@@ -55,25 +57,27 @@ module.exports = app => {
     // const compactEvents = _.compact(events) // this function removes the undefined objects from array
     // const uniqueEvents = _.uniqBy(conmpactEvents, 'email', 'surveyId') //this function returns only unique events on the basis of given filters like here we gave email and survey id, so only one record would be given containing same email and surveyid
     // console.log(uniqueEvents)
-    // // console.log(req.body)
-    const events = _.chaing(req.body)
+     
+    _.chain(req.body)
       .map(({ email, url }) => {
+        console.log(email)
+        console.log(url)
         const match = p.test(new URL(url).pathname)
         if(match) {
           return { email, surveyId: match.surveyId, choice: match.choice }
         }
       })
-      .compatct()
+      .compact()
       .uniqBy('email', 'surveyId')
       .each( ({ surveyId, email, choice }) => {
         Survey.updateOne({
           _id: surveyId, //in mongo id is _id so renaming it
-          receipients: {
+          recipients: {
             $elemMatch: { email: email, responded: false }
           }
         }, {
           $inc: { [choice]: 1 }, //here choice is either yes or no so accordingly fields would be updated at runtime
-          $set: { 'receipients.$.responded': true }, // this line would update the responded property, here we are using another mongo operator, $set sets value 	
+          $set: { 'recipients.$.responded': true }, // this line would update the responded property, here we are using another mongo operator, $set sets value 	
           lastResponded: new Date()
         }).exec() // this exec() is required to execute query in the query
       })

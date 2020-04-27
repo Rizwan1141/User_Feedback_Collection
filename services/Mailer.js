@@ -1,19 +1,3 @@
-// const keys = require('../config/keys');
-// const sgMail = require('@sendgrid/mail');
-
-// module.exports = async ({ subject, recipients }, content) => {
-//   // using SendGrid's v3 Node.js Library
-//   // https://github.com/sendgrid/sendgrid-nodejs
-//   sgMail.setApiKey('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');
-//   const formattedRecipients = recipients.map(({email}) => email);
-//   const msg = {
-//     to: 'rizi.1141@gmail.com',
-//     from: 'no-reply@emaily.com',
-//     subject: subject,
-//     html: content,
-//   };
-//   await sgMail.send(msg);
-// }
 
 //it is going to export a class , so name starts with a capital letter
 // passport.js starts with small letter, because it doesnot return anything
@@ -33,10 +17,7 @@ class Mailer extends helper.Mail {
         super() //es2016 syntax
 
         this.sgApi = sendgrid(keys.sendGridKey) // passing key generated from sendgrid
-        //this.sgApi = sendgrid('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') // passing key generated from sendgrid
-        helper.s
-        //this.from_email = new helper.Email('no-reply@emaily.com')
-        this.from_email = new helper.Email('rizwan.bashir92@outlook.com')
+        this.from_email = new helper.Email('rizi.1141@outlook.com')
         this.subject = subject
         this.body = new helper.Content('text/html', content)
         this.recipients = this.formatAddresses(recipients)
@@ -77,7 +58,7 @@ class Mailer extends helper.Mail {
             const request = this.sgApi.emptyRequest({
             method: 'POST',
             path: '/v3/mail/send',
-            body: this//.toJSON()
+            body: this.toJSON()
             });
                     
             //try {
