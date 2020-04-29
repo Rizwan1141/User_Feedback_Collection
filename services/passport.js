@@ -65,7 +65,7 @@ passport.use(
       }
     )
   )
-  
+  console.log('passport.js:: after GOOGLE strategy defined')
   passport.use(
     new FacebookStrategy(
     {
