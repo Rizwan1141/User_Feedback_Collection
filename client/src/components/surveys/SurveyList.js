@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import {  connect } from 'react-redux'
-import { fetchSurvey, fetchSurveys } from '../../actions'
+import { fetchSurvey, fetchSurveys, deleteSurvey } from '../../actions'
+//import * as actions from '../../actions'
 
 class SurveyList extends Component {
     componentDidMount() {
         this.props.fetchSurveys()
+        this.props.deleteSurvey()
+        
     }
 
     renderSurveys() {
@@ -13,17 +16,26 @@ class SurveyList extends Component {
             return (
                 <div className="card darken-1" key={survey._id} >
                     <div className="card-content text-white">
-                        <span className="card-title">{survey.title}</span>
+                        
+                            <span className="card-title">{survey.title}</span>
+                           
+                        
                         <p>
                             {survey.body}
                         </p>
+                        
                         <p className="right">
                             Sent On: {new Date(survey.dateSent).toLocaleDateString()}
                         </p>
+                        
                     </div>
                     <div className="card-action">
                         <a>Yes: {survey.yes}</a>
                         <a>No: {survey.no}</a>
+                        <button onClick={(e) =>  {if (window.confirm('Are you sure to delete this survey?'))  this.props.deleteSurvey({"surveyId" : survey._id}) } } 
+                                className="right btn-floating btn-small red">
+                            <i className="material-icons">delete</i>
+                        </button>
                     </div>
                 </div>
             )
@@ -46,4 +58,4 @@ class SurveyList extends Component {
 function mapStateToProps( { surveys }) {
     return { surveys }
 }
-export default connect(mapStateToProps, { fetchSurveys }) (SurveyList)
+export default connect(mapStateToProps, { fetchSurveys, deleteSurvey } ) (SurveyList)

@@ -131,10 +131,15 @@ module.exports = app => {
       }
       catch(err){
         res.status(422).send(err)
-      }
-      
-        
+      }      
+  })
 
-
+  app.post('/api/surveys/delete', requireLogin, async (req, res) => {
+    const { surveyId } = req.body
+    console.log("survey Routes ::" + surveyId)
+    
+    await Survey.findOneAndRemove({ _id: surveyId })
+    
+    res.send({})
   })
 }

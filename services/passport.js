@@ -1,5 +1,7 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
+const FacebookTokenStrategy = require('passport-facebook-token')
 const mongoose = require('mongoose')
 const keys = require('../config/keys')
 
@@ -61,6 +63,35 @@ passport.use(
        // console.log('refresh Token', refreshToken);
        // console.log('profile', profile);
       }
+    )
+  )
+  
+  passport.use(
+    new FacebookStrategy(
+    {
+      clientID: keys.facebookClientID,
+      clientSecret: keys.facebookClientSecret,
+      callbackURL: '/auth/facebook/callback',
+      profileFields: ['id','email', 'displayName'],
+      enableProof: true,
+      proxy: true
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      
+      console.log('Facebook aouth successfully returned .')
+      const existingUser = await User.findOne({ googleId: profile.id })
+      if(existingUser)
+      {
+        console.log(('User Already Exists with ID:').concat(existingUser.googleId))
+        // we already have a record with the given Profie ID
+        return  done(null, existingUser) // null mean no error, second parameter is existing User
+      } 
+      // we dont have a user with this ID, make a new user in db
+      // we created new object of User and assigned it value and to save in actual database we used function save()
+      //used then to call done, as we dont know what and when user creation is completed due to asyncronous behaviour 
+      const user = await new User({ googleId: profile.id }).save()
+      done(null, user)
+    }
     )
   )
   console.log('passport.js:: after strategy defined')

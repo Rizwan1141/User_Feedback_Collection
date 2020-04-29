@@ -23,9 +23,10 @@ class Header extends Component
             case null:
                 return //'Still deciding'
             case false:
-                return (
-                    <li><a href="/auth/google">Login With Google</a></li>
-                )//'im logged out'
+                return [
+                    <li key="1"><a href="/auth/facebook">Login With Facebook</a></li>,
+                    <li key="2"><a href="/auth/google">Login With Google</a></li>
+                ]//'im logged out'
             default:
                 return [
                     <li key="1"><Payments /></li>,

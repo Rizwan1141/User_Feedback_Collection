@@ -31,4 +31,27 @@ module.exports = (app) => {
     //res.send(req.session)
     res.send(req.user)
   })
+
+  // app.get(
+  //   '/auth/facebook',
+  //   passport.authenticate('facebookToken', {
+  //     scope: ['profile', 'email']
+  //   })
+  // )
+
+  app.get(
+    '/auth/facebook',
+    passport.authenticate('facebook', {
+      publish_actions: ['profile', 'email']
+    })
+  )
+
+  app.get(
+    '/auth/facebook/callback', 
+    passport.authenticate('facebook'),
+    (req, res) => {
+      res.redirect('/surveys')
+    }
+  )
+
 }
