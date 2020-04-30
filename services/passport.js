@@ -46,6 +46,8 @@ passport.use(
         //then statement is used after query completion, it is null or not
         //below line would check into db if this id already exists?
         console.log('Google aouth successfully returned .')
+        console.log('profile:displayName', profile.displayName);
+        console.log('profile:given_name', profile.name.givenName);
         const existingUser = await User.findOne({ googleId: profile.id })
         if(existingUser)
         {
@@ -56,12 +58,11 @@ passport.use(
         // we dont have a user with this ID, make a new user in db
         // we created new object of User and assigned it value and to save in actual database we used function save()
         //used then to call done, as we dont know what and when user creation is completed due to asyncronous behaviour 
-        const user = await new User({ googleId: profile.id }).save()
+        const user = await new User({ googleId: profile.id, firstName: profile.name.givenName }).save()
         done(null, user)
               
         // console.log('accessToken', accessToken);
        // console.log('refresh Token', refreshToken);
-       // console.log('profile', profile);
       }
     )
   )
@@ -72,13 +73,14 @@ passport.use(
       clientID: keys.facebookClientID,
       clientSecret: keys.facebookClientSecret,
       callbackURL: '/auth/facebook/callback',
-      profileFields: ['id','email', 'displayName'],
+      profileFields: ['id','email', 'displayName', 'first_name'],
       enableProof: true,
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {
       
       console.log('Facebook aouth successfully returned .')
+      console.log("profile:first_name::" + profile.name.givenName)
       const existingUser = await User.findOne({ googleId: profile.id })
       if(existingUser)
       {
@@ -89,7 +91,7 @@ passport.use(
       // we dont have a user with this ID, make a new user in db
       // we created new object of User and assigned it value and to save in actual database we used function save()
       //used then to call done, as we dont know what and when user creation is completed due to asyncronous behaviour 
-      const user = await new User({ googleId: profile.id }).save()
+      const user = await new User({ googleId: profile.id, firstName: profile.name.givenName }).save()
       done(null, user)
     }
     )

@@ -5,6 +5,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom' //which is specifically the flavour of react router which works inside the browser 
 import Payments from './Payments'
+import UserInfo from './UserInfo'
+//import * as $ from 'jquery';
 //we would use Materializecss.com for just a basic look & feel
 //MaterialUi another css library, it uses javascript based styling which is little hard to modify/customize
 
@@ -16,6 +18,7 @@ import Payments from './Payments'
         //- if it responds back with undefined/null etc then user is not loged IN
 class Header extends Component
 {
+    
     //this function would decide what to render, if we dont know about user state yet we want to show empty area, if user is not loged in we want to show login with google , if loged in then welcom etc
     // for this purpose we would use now auth property which we set earlier 
     renderContent(){
@@ -32,16 +35,18 @@ class Header extends Component
                     <li key="1"><Payments /></li>,
                     <li key="3" style={{ margin: '0 10px' }}>
                         Credits: {this.props.auth.credits}
-                    </li>,
-                    <li key="2"><a href="/api/logout">Logout</a></li>
+                    </li>
+                    //,<li key="2"><a href="/api/logout">Logout</a></li>
+                    ,<UserInfo key="4"/>
                 ] //'im logged in'
         }
     }
     render() {
+        
         //console.log(this.props)
         //on clicking logo we will see if user is loged in then send it to different page than if the user is not loged in for which we would use auth property here as well
         return(
-            <nav>
+            <nav>                
                 <div className="nav-wrapper">
                     <Link 
                     to={ this.props.auth ? '/surveys' : '/' }
@@ -53,7 +58,7 @@ class Header extends Component
                         { this.renderContent() }
                     </ul>
                 </div>
-            </nav>
+            </nav>   
         )
     }
 }

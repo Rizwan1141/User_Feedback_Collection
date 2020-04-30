@@ -7,6 +7,7 @@ console.log('user.js:: before schema declaration')
 // further options can be seen on mongoos documentation
 const userSchema = new Schema({
     googleId: String,
+    firstName: { type: String, default: "" },
     credits: { type: Number, default: 0 } // for setting multiple properties we are using object
 })
 console.log('user.js:: after schema declaration')
