@@ -1,0 +1,25 @@
+
+
+
+  .modal-header {
+    position: sticky;
+    padding: 4px 6px;
+    height: 56px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .modal-header h4 {
+    margin: 0;
+  }
+  
+
+  /* .modal-body{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  } */
+  .modal-body{
+    height: auto !important;
+    max-height: calc(100hv - 56px) !important;
+     overflow-y: auto;
+  }

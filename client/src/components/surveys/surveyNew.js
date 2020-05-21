@@ -24,9 +24,15 @@ class SurveyNew extends Component {
         }
 
         //to handle/toggle this state we would use a callback function using property onSurveySubmit
-        return <SurveyForm  onSurveySubmit={() => this.setState({ showFormReview: true })}/>
+        return <SurveyForm  onSurveySubmit={(values) => {this.setState({ showFormReview: true }); console.log(values)}}/>
     }
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+      }
     render() {
+        const { handleSubmit } = this.props;
+        
         return (
             <div>
                 {this.renderContent()}

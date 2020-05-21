@@ -8,17 +8,19 @@ import { reduxForm, Field } from 'redux-form'
 // export default props => {
 //     console.log(props.input)
 //now as we are using props twice and ultimately fetching its property, no other use so we can write it in es15 syntax as below
-export default ({ input, label, meta: { error, touched} }) => {
+
+export default ({ input, label, content, onChange, meta: { error, touched} }) => {
     //meta: {error, touched} means we are not fetching whole object but only two properties which we need
     //console.log(meta)
     //console.log(props.input)
     //<input onBlur={input.onBlur} onChange={input.onChange} /> -- this is equal to <input {...input} />
     // which means that include all the events of this element
     // we want this label text to be sent from parent, as we want to reuse this component, so we would add this in the argument as well and set it below like {label}
+    
     return (
         <div>
             <label>{label}</label> 
-            <input {...input} style={{ marginBottom: '5px' }}/>
+            <input {...input} value={content} style={{ marginBottom: '5px' }}/>
             <div className="red-text" style={{ marginBottom: '20px' }}>
             { touched && error }
             </div>

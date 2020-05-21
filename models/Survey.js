@@ -12,7 +12,8 @@ const surveySchema = new Schema({
     no: { type: Number, default: 0},
     _user: { type: Schema.Types.ObjectId, ref: 'User'}, //name what ever we want, _ is to identify it as relationship, to make mongo understand that we are setting up relationship
     dateSent: Date, // the date it was sent to users
-    lastResponded: Date // the last response time, user would know if this is still active or not
+    lastResponded: Date, // the last response time, user would know if this is still active or not
+    surveySent: { type: Boolean, default: false} 
 })
 //we have two issues with recipients being string of error
 // - first is where do we store our feedback from end user, so against each recipient we need to save its feed back

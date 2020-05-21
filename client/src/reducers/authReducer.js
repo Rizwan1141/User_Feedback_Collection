@@ -10,7 +10,7 @@ import { FETCH_USER } from '../actions/types'
     //-then hook that up with our redux store inside our application root index.js
     export default function(state = null, action){
         //action types would be any types defined in our project would be added in swithc statement 
-        console.log(action)
+        //console.log(action)
         switch(action.type){
             case FETCH_USER:
                 return action.payload || false

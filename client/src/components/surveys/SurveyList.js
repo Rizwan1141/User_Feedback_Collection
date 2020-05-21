@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {  connect } from 'react-redux'
-import { fetchSurvey, fetchSurveys, deleteSurvey } from '../../actions'
+import { fetchSurveys, deleteSurvey } from '../../actions'
 //import * as actions from '../../actions'
 
 class SurveyList extends Component {
     componentDidMount() {
-        this.props.fetchSurveys()
-        this.props.deleteSurvey()
+        this.props.fetchSurveys({surveySent : true})
+        //this.props.deleteSurvey()
         
     }
 

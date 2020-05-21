@@ -1,10 +1,10 @@
-import { FETCH_SURVEYS } from '../actions/types'
+import { SURVEY_DETAILS } from '../actions/types'
 
 export default function(state = [], action) {
     //console.log(action)
 
     switch (action.type) {
-        case FETCH_SURVEYS:
+        case SURVEY_DETAILS:
             return action.payload
         default:
             return state

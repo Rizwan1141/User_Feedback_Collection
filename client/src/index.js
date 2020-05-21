@@ -1,5 +1,6 @@
 //import materializeCSS from 'materialize-css/dist/css/materialize.min.css'
 import 'materialize-css/dist/css/materialize.min.css'
+import './css/custom_styleSheet.css'
 //both above are equal as we are not using this variable anywhere so condensed the syntax of import
 import React from 'react'
 import ReactDom from 'react-dom'
