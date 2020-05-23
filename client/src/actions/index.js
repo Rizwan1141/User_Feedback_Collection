@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { FETCH_USER } from './types'
 import { FETCH_SURVEYS } from './types'
-import { SURVEY_DETAILS } from './types'
+import { SURVEY_DETAILS, CLEAR_FIELDS } from './types'
 //import { bindActionCreators } from 'redux'
 
 export const fetchUser = () => 
@@ -33,18 +33,27 @@ export const handleToken = (token) =>
 
 //values would be the data we receive from user input form
 //redux always expect us to return an object which is an action, with type property
-export const submitSurvey = (values, history) => 
+export const submitSurvey = (values, surveyId, history) => 
     async dispatch => {
+        try{
+            
+        values.surveyId = surveyId
         const res = await axios.post('/api/surveys', values)
         
         history.push('/surveys')
         dispatch({ type: FETCH_USER, payload: res.data })
         //return { type: 'submit_survey' }
+        }
+        catch(err){
+            console.log('Submit Survey Error!!', err.toString())
+            console.log('Submit Survey Error!!', err.response.data.error)
+            throw err
+        }
 }
 
 export const fetchSurveys = (param) => async dispatch => {
-    console.log("Actions::Index::fetch Surveys::" + param.surveySent) 
-    console.log("Actions::Index::fetch Surveys::" + JSON.stringify(param)) 
+    //console.log("Actions::Index::fetch Surveys::" + param.surveySent) 
+    //console.log("Actions::Index::fetch Surveys::" + JSON.stringify(param)) 
     const res = await axios.get('/api/surveys?surveySent=' + param.surveySent)
 
     dispatch({ type: FETCH_SURVEYS, payload: res.data })
@@ -80,6 +89,7 @@ function loadSurveyDetails(survey){
     //console.log("Actions::Index::loadSurveyDetails:recipients:" +  recipients)
 
     var detailObj = {
+        surveyId: survey._id,
         title: survey.title,
         subject: survey.subject,
         body: survey.body,
@@ -104,3 +114,10 @@ export const fetchSurvey = (param, history) => async dispatch => {
     history.push({pathname: '/surveys/new'
                 , loadSurvey:"true"})
 }
+
+export const clearFields = () => 
+    async dispatch => {
+        console.log("actions:clearFields:" )
+        dispatch({ type: CLEAR_FIELDS, payload: {} })
+        //return { type: 'submit_survey' }
+    }

@@ -6,7 +6,7 @@ import { Link, withRouter  } from 'react-router-dom'
 import SurveyField from './SurveyField'
 import validateEmails from '../../utils/validateEmails'
 import formFields from './formFields'
-import { saveSurvey } from '../../actions'
+import { saveSurvey, clearFields } from '../../actions'
 import {  connect } from 'react-redux'
 import SavedSurveys from './SavedSurveys'
 
@@ -93,7 +93,7 @@ class SurveyForm extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        console.log("handleSubmit:" )
+        console.log("handleSubmit:surveyDetails" + this.props.surveyDetails )
         this.props.handleSubmit(this.props.onSurveySubmit)
         //this.props.onSurveySubmit()
       }
@@ -104,6 +104,19 @@ class SurveyForm extends Component {
         console.log("handleSave:this.values:" + JSON.stringify( this.state ))
         this.props.dispatch(saveSurvey(this.state, this.props.history))
       }
+    clearFields(){
+        //console.log('clear Fields::',  JSON.stringify(this.state))
+        this.props.clearFields()
+        
+        const { dispatch } = this.props;
+        const stat = this
+        formFields.forEach(function ({name}){
+            //console.log("name:" + stat[name])
+            dispatch(change('surveyForm', name, ''));
+            stat.setState({[name]: ''})
+        })
+        //console.log('clear Fields2::' + JSON.stringify(this.state))
+    }
     render() {
         return (
             //<form onSubmit={this.props.handleSubmit(values => console.log(values))}>
@@ -114,6 +127,7 @@ class SurveyForm extends Component {
                     {this.renderFields()/* <Field type="text" name="surveyTitle" component="input" /> */}
                     <Link to="/surveys" className="red btn-flat white-text">
                         Cancel
+                        <i className="material-icons right">cancel</i>
                     </Link>
                     <button type="submit"
                             className="teal btn-flat right white-text" >
@@ -122,11 +136,16 @@ class SurveyForm extends Component {
                     </button>
                     
                     <button type="button" onClick={this.handleSave.bind(this)}
-                            className="blue btn btn-flat white-text right" style={{ margin: '0 10px' }}>
+                            className="light-blue darken-3 btn btn-flat white-text right" style={{ margin: '0 10px' }}>
                         Save
                         <i className="material-icons right">save</i>
                     </button>
                     <SavedSurveys />
+                    <button type="button" onClick={this.clearFields.bind(this)}
+                            className="orange btn-flat right white-text" >
+                        Clear
+                        <i className="material-icons right">clear</i>
+                    </button>
                 </form>
             </div>
         )
@@ -205,7 +224,7 @@ function mapStateToProps( state ) {
 //     return { values }
 //   }, mapStateToProps ), {  saveSurvey, fetchSurvey }
 // )(withRouter(SurveyForm))
-const decoratedForm = connect( mapStateToProps, { saveSurvey })(withRouter(SurveyForm))
+const decoratedForm = connect( mapStateToProps, { saveSurvey, clearFields })(withRouter(SurveyForm))
 //onSubmit is the function called on form submission like normal html, so we have access to all data on form on submission in this.props.handleSubmit
 export default reduxForm({
     //validate: validate,
