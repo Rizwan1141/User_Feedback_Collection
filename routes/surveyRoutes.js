@@ -94,10 +94,12 @@ module.exports = app => {
 
   app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
       //request body should contain title, subject, body, recipients(comma separated)
-      const { title, subject, body, recipients } = req.body
+      const { title, subject, body, recipients, surveyId } = req.body
       //so from front end wwe would be passing these properties from react side
       // its better to work on backend first in most professional projects, sometimes it seems to work with front end first easy but dont do that cover all your routes first on backend
       console.log("surveyRoutes::post:recipients::" + recipients)
+      console.log('surveyRoute:surveyId', surveyId)
+      
       const survey = new Survey({
           //title: title //first title is property of survey instance created from survey modle, 2nd is the local variable extracted from request body
           //now if both are named same so in es15 syntax we can simple use once like below
@@ -126,7 +128,14 @@ module.exports = app => {
       const mailer = new Mailer(survey, surveyTemplate(survey))
       try{
         await mailer.send();
-        await survey.save()
+        if(surveyId != '')
+        {
+          console.log('survey Routes: update one: survey Id:', surveyId)
+          await Survey.updateOne({ _user: req.user.id, _id: surveyId }, {dateSent: Date.now(), surveySent: true})
+
+        }
+        else
+          await survey.save()
         req.user.credits -= 1
         const user = await req.user.save()
         //Mailer(survey, surveyTemplate(survey));

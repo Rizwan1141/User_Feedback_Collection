@@ -5,8 +5,22 @@ import { connect } from 'react-redux'
 import formFields from './formFields'
 import { withRouter } from 'react-router-dom'
 import * as actions from '../../actions'
+import M from "materialize-css"
 
-const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
+const SurveyFormReview = ({ onCancel, formValues, submitSurvey, surveyDetail, history }) => {
+    
+    function handleSubmitSurvey(){
+        const surveyId = (_.isEmpty(surveyDetail) || typeof surveyDetail == 'undefined' 
+                                ? '' : surveyDetail.surveyId)
+        submitSurvey(formValues, surveyId, history)
+            .then()
+            .catch(error => {
+                // console.log('handleSubmitSurvey Error!!', error.toString())
+                // console.log('handleSubmitSurveys Error!!', error.response.data.error)
+                //alert(error.response.data.error);
+                M.toast({html: '<i class="material-icons left">cancel</i>'+ error.response.data.error, classes:'red'})
+            })
+    }
     //As here we are producing list of elemets, so every element needs to be have unique key
     //const reviewFields = _.map(formFields, field => {
         //as we are repeating field again n again, so we would directly fetch the properties we need to use like label and name
@@ -47,7 +61,7 @@ const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
             <button className="yellow darken-3 white-text btn-flat" onClick={onCancel} >
                 Back
             </button>
-            <button onClick={() => submitSurvey(formValues, history)} className="green btn-flat white-text  right">
+            <button onClick={handleSubmitSurvey} className="green btn-flat white-text  right">
                 Send Survey
                 <i className="material-icons right">email</i>
             </button>
@@ -70,7 +84,8 @@ function mapStateToProps(state) {
     //console.log(state)
     console.log(state.form.surveyForm.values)
     return {
-        formValues: state.form.surveyForm.values
+        formValues: state.form.surveyForm.values,
+        surveyDetail: state.surveyDetail
     }
 }
 //what connect does is, all the values/data returned from mapStateToProps would be added to SurveyFormReview as props

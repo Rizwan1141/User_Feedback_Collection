@@ -14,7 +14,7 @@ class SurveyList extends Component {
         //to bring the latest, new survey to top we will use reverse function
         return this.props.surveys.reverse().map(survey => {
             return (
-                <div className="card darken-1" key={survey._id} >
+                <div className="card blue-grey lighten-4" key={survey._id} >
                     <div className="card-content text-white">
                         
                             <span className="card-title">{survey.title}</span>

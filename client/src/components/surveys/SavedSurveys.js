@@ -12,10 +12,10 @@ class SavedSurveys extends Component{
         this.props.fetchSurveys({surveySent : false})
 
         const options = {
-            onOpenStart: () => {console.log("Open Start");},
-            onOpenEnd: () => {console.log("Open End");},
-            onCloseStart: () => {console.log("Close Start");},
-            onCloseEnd: () => {console.log("Close End");},
+            // onOpenStart: () => {console.log("Open Start");},
+            // onOpenEnd: () => {console.log("Open End");},
+            // onCloseStart: () => {console.log("Close Start");},
+            // onCloseEnd: () => {console.log("Close End");},
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
@@ -31,7 +31,7 @@ class SavedSurveys extends Component{
         //to bring the latest, new survey to top we will use reverse function
         return this.props.surveys.reverse().map(survey => {
             return (
-                <div className="card darken-1" key={survey._id} >
+                <div className="card light-green lighten-3" key={survey._id} >
                     <div className="card-content text-white">
                             <span className="card-title">{survey.title}</span>
                         <p>
