@@ -6,6 +6,7 @@ import M from "materialize-css"
 import { connect } from 'react-redux'
 import { fetchSurveys, deleteSurvey, fetchSurvey } from '../../actions'
 import { withRouter } from 'react-router-dom'
+import * as alertify from 'alertifyjs'
 
 class SavedSurveys extends Component{
     componentDidMount() {
@@ -27,9 +28,28 @@ class SavedSurveys extends Component{
         M.Modal.init(element, options);
                 
     }
+    // componentDidUpdate(){
+    //     console.log("SavedSurvey:ComponentDidUpdate",this.props.surveys)
+    //     this.props.fetchSurveys({surveySent : false})
+
+    // }
+    handleDeleteSurvey(surveyId){
+        const { deleteSurvey } = this.props;
+        alertify.confirm('Are you sure to delete this survey?', function (ev) {
+            deleteSurvey({"surveyId" : surveyId, "surveySent": false})
+            .then(success => {M.toast({html: '<i class="material-icons left">done</i> Survey Deleted Successfully', classes:'green'})})
+            .catch(error => {
+                M.toast({html: '<i class="material-icons left">cancel</i>'+ error.response.data.error, classes:'red'})
+            })
+        }, function(ev) {
+            //alertify.alert("Cancel Button Clicked");        
+        });
+        // if (window.confirm('Are you sure to delete this survey?'))  
+        //     this.props.deleteSurvey({"surveyId" : surveyId})
+    }
     renderSurveys() {
         //to bring the latest, new survey to top we will use reverse function
-        return this.props.surveys.reverse().map(survey => {
+        return this.props.surveys.filter(survey => survey.surveySent == false).reverse().map(survey => {
             return (
                 <div className="card light-green lighten-3" key={survey._id} >
                     <div className="card-content text-white">
@@ -42,7 +62,7 @@ class SavedSurveys extends Component{
                     <div className="card-action">
                     <span className="">
                             Saved On: {new Date(survey.dateSent).toLocaleDateString()}
-                        <button onClick={(e) =>  {if (window.confirm('Are you sure to delete this survey?'))  this.props.deleteSurvey({"surveyId" : survey._id}) } } 
+                        <button onClick={()=> this.handleDeleteSurvey(survey._id)} 
                                 className="right btn-floating btn-small red">
                             <i className="material-icons">delete</i>
                         </button>

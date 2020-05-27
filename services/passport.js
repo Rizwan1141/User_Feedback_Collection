@@ -21,7 +21,7 @@ passport.deserializeUser((id, done) => {
     })
   //now we would be finding this user by using its id in 'users' collection
 })
-console.log('passport.js:: defined serialize and deserialize')
+//console.log('passport.js:: defined serialize and deserialize')
 //new google strategry we are telling application that we want to authenticate with google
 //passport.use is generic function to handle authentication, and what type, that we wrote as parameter googlestrategy
 //parameters for google strategy are client iinformation like id and secret and callback url which is used once google authenticates
@@ -66,7 +66,7 @@ passport.use(
       }
     )
   )
-  console.log('passport.js:: after GOOGLE strategy defined')
+  //console.log('passport.js:: after GOOGLE strategy defined')
   passport.use(
     new FacebookStrategy(
     {
@@ -96,4 +96,4 @@ passport.use(
     }
     )
   )
-  console.log('passport.js:: after strategy defined')
+  //console.log('passport.js:: after strategy defined')

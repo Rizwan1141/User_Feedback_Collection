@@ -156,7 +156,7 @@ module.exports = app => {
     res.send({})
   })
 
-  app.post('/api/surveys/save', requireLogin, requireCredits, async (req, res) => {
+  app.post('/api/surveys/save', requireLogin, async (req, res) => {
     debugger;
     console.log("req.body" + req.body)
     console.log("title" + req.body.title)
@@ -176,7 +176,6 @@ module.exports = app => {
     console.log("survey:" + survey)
     try{
       await survey.save()
-          
       res.send({})
     }
     catch(err){

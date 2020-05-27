@@ -13,7 +13,8 @@ import { BrowserRouter, Route} from 'react-router-dom'
 //react redux lib is al about react and redux, we use connect component to get ability to call action creaters
 import { connect } from 'react-redux'
 import * as actions from '../actions' // we imported all the action creaters and assign them actions object here
-
+import '../styles/alertify.css'
+import '../styles/default.css'
 
 //const Header = () => <h2> Header </h2>
 import Header from './Header'

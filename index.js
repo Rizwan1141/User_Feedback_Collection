@@ -10,11 +10,11 @@ require('./models/user')
 require('./models/Survey')
 require('./services/passport')
 
-console.log('index.js:: before connecting to mongodb')
+//console.log('index.js:: before connecting to mongodb')
 mongoose.connect(keys.mongoURI)
-console.log('index.js:: after connecting to mongodb')
+//console.log('index.js:: after connecting to mongodb')
 const app = express()
-console.log('index.js:: before app.use cookie session')
+//console.log('index.js:: before app.use cookie session')
 
 app.use(bodyParser.json())
 
@@ -24,15 +24,16 @@ app.use(bodyParser.json())
 //2 - //it would always be array as we can provide mulitple keys for security, so cookie can use anyone string
 app.use(
   cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000, 
+    //maxAge: 30 * 24 * 60 * 60 * 1000, // it was set to 30 days
+    maxAge: 3 * 60 * 1000,  //setting it to 3 mins
     keys: [keys.cookieKey]
   })
 )
-console.log('index.js:: after cookie session defined')
+//console.log('index.js:: after cookie session defined')
 //app.use  //these three functions are middleware in our application, they are used to modify incoming requests before sending to route handlers
 app.use(passport.initialize())
 app.use(passport.session())
-console.log('index.js after initialize and session')
+//console.log('index.js after initialize and session')
 //const authRoutes = require('./routes/authRoutes')
 //authRoutes(app)
 //alternate to above commented lines and access exported functions is
